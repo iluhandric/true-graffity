@@ -52,7 +52,7 @@ function createCan(color) {
     top.style.width = 20 + 'px';
     top.style.display = 'block';
     top.style.float = 'left';
-    top.style.margin = '13px';
+    top.style.margin = '11px';
     top.style.height = 20 + 'px';
     top.style.background = '#333333';
     // top.style.boxShadow =  '1px 1px 0px #333333';
@@ -63,10 +63,10 @@ function createCan(color) {
     whiteTop.style.width = 8 + 'px';
     whiteTop.style.display = 'block';
     whiteTop.style.float = 'left';
-    whiteTop.style.margin = '6px';
+    whiteTop.style.margin = '3px';
     whiteTop.style.height = 8 + 'px';
     whiteTop.style.background = '#ffffff';
-    whiteTop.style.boxShadow =  '3px 3px 0px #000000';
+    whiteTop.style.boxShadow =  '2px 2px 0px #000000';
     top.appendChild(whiteTop);
     newCan.appendChild(top);
     newCan.onclick = function () {

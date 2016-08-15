@@ -1,5 +1,6 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="jscolor.js"></script>
 <script src='./drawer.js'>
 </script>
@@ -23,6 +24,16 @@
     height: 50px;
     border-radius: 25px;
 }
+#pallete {
+    /*background-image: url("https://media.freestocktextures.com/cache/b4/13/b41378848a0c17575cec2200df8c36c1.jpg");*/
+    background-color: rgb(230, 230, 200);
+    border : 2px solid #ffffff;
+    border-radius: 5px;
+    height: auto;
+    padding: 10px;
+    margin: 10px;
+    width: auto
+}
 
 </style>
 <canvas id="canvasDiv" class = 'canvas'>
@@ -40,10 +51,20 @@
     <input id='picker' class="jscolor {onFineChange:'update(this)'}" value="000000">
 
 </div>
-<div id="circle" style='float:left; margin : 10px' onclick="document.getElementById('picker').jscolor.show()" ></div>
+
+<div style='width:150px;float:left;'>
+    <div align = "center"id="circle" style=' margin : 10px' onclick="document.getElementById('picker').jscolor.show()" ></div>
 </div>
-<button onclick='addToPallete(curColor)'> + </button>
+<button style='float:left' onclick='addToPallete(curColor)'  type="button" class="btn btn-default"> 
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    Save to pallete
+</button>
+<div id="pallete" style='float:left'></div>
+</div>
+
+
 <br><br><br>
-<div id="pallete" style= ></div>
+<br><br><br>
+
 </div>
 </body>
