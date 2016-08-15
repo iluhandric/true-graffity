@@ -259,25 +259,29 @@ $( document ).ready(function() {
 
 
     canvas.addEventListener("touchstart", function (e) {
-        mousePos = getTouchPos(canvas, e);
-  var touch = e.touches[0];
-  var mouseEvent = new MouseEvent("mousedown", {
-    clientX: touch.clientX,
-    clientY: touch.clientY
-  });
-  canvas.dispatchEvent(mouseEvent);
-}, false);
+        mousedownousePos = getTouchPos(canvas, e);
+        alert('start');
+          var touch = e.touches[0];
+          var mouseEvent = new MouseEvent("mousedown", {
+            pageX: touch.clientX,
+            pageY: touch.clientY,
+            which : 1,
+          });
+          canvas.dispatchEvent(mouseEvent);
+        }, false);
+
 canvas.addEventListener("touchend", function (e) {
   var mouseEvent = new MouseEvent("mouseup", {});
   canvas.dispatchEvent(mouseEvent);
 }, false);
+
 canvas.addEventListener("touchmove", function (e) {
   var touch = e.touches[0];
   var mouseEvent = new MouseEvent("mousemove", {
     clientX: touch.clientX,
     clientY: touch.clientY
   });
-  alert('move');
+  
   canvas.dispatchEvent(mouseEvent);
 }, false);
 });
