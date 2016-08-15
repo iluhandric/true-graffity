@@ -215,9 +215,20 @@ $( document ).ready(function() {
             Y = e.pageY - this.offsetTop;
         }
     });
-    $('#canvas').click(function(e){
-        var button = e.which || e.button;
-        if (button === 1) {
+    // $('#canvas').click(function(e){
+    //     var button = e.which || e.button;
+    //     if (button === 1) {
+    //         curSpeed = shift;
+    //         shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+    //         curSpeed += shift + oldshift + prevshift;
+    //         curSpeed /= 4;
+    //         prevshift = oldshift; 
+    //         oldshift = shift;
+    //         X = e.pageX - this.offsetLeft;
+    //         Y = e.pageY - this.offsetTop;
+    //     }
+    // });
+    $('#canvas').on('touchmove',function(e){
             curSpeed = shift;
             shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
             curSpeed += shift + oldshift + prevshift;
@@ -226,22 +237,11 @@ $( document ).ready(function() {
             oldshift = shift;
             X = e.pageX - this.offsetLeft;
             Y = e.pageY - this.offsetTop;
-        }
-    });
-    
-    $('#canvas').touchmove(function(e){
-        var button = e.which || e.button;
-        if (button === 1) {
-            curSpeed = shift;
-            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-            curSpeed += shift + oldshift + prevshift;
-            curSpeed /= 4;
-            prevshift = oldshift; 
-            oldshift = shift;
-            X = e.pageX - this.offsetLeft;
-            Y = e.pageY - this.offsetTop;
-        }
-    });
+
+   }); 
+    // $('#canvas').touchmove(function(e){
+           
+    // });
     $('#canvas').mouseup(function(e){
         var button = e.which || e.button;
         if (button === 1) {
