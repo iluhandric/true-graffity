@@ -228,17 +228,17 @@ $( document ).ready(function() {
     //         Y = e.pageY - this.offsetTop;
     //     }
     // });
-    $('#canvas').on('touchmove',function(e){
-            curSpeed = shift;
-            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-            curSpeed += shift + oldshift + prevshift;
-            curSpeed /= 4;
-            prevshift = oldshift; 
-            oldshift = shift;
-            X = e.pageX - this.offsetLeft;
-            Y = e.pageY - this.offsetTop;
+   //  $('#canvas').on('touchmove',function(e){
+   //          curSpeed = shift;
+   //          shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+   //          curSpeed += shift + oldshift + prevshift;
+   //          curSpeed /= 4;
+   //          prevshift = oldshift; 
+   //          oldshift = shift;
+   //          X = e.pageX - this.offsetLeft;
+   //          Y = e.pageY - this.offsetTop;
 
-   }); 
+   // }); 
     // $('#canvas').touchmove(function(e){
            
     // });
@@ -256,4 +256,27 @@ $( document ).ready(function() {
       dropTime = 0;
       curDrop.startY = -1;
     });
+
+
+    canvas.addEventListener("touchstart", function (e) {
+        mousePos = getTouchPos(canvas, e);
+  var touch = e.touches[0];
+  var mouseEvent = new MouseEvent("mousedown", {
+    clientX: touch.clientX,
+    clientY: touch.clientY
+  });
+  canvas.dispatchEvent(mouseEvent);
+}, false);
+canvas.addEventListener("touchend", function (e) {
+  var mouseEvent = new MouseEvent("mouseup", {});
+  canvas.dispatchEvent(mouseEvent);
+}, false);
+canvas.addEventListener("touchmove", function (e) {
+  var touch = e.touches[0];
+  var mouseEvent = new MouseEvent("mousemove", {
+    clientX: touch.clientX,
+    clientY: touch.clientY
+  });
+  canvas.dispatchEvent(mouseEvent);
+}, false);
 });
