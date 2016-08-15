@@ -277,6 +277,7 @@ canvas.addEventListener("touchmove", function (e) {
     clientX: touch.clientX,
     clientY: touch.clientY
   });
+  alert('move');
   canvas.dispatchEvent(mouseEvent);
 }, false);
 });
