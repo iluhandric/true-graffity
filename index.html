@@ -1,0 +1,36 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="jscolor.js"></script>
+<script src='./drawer.js'>
+</script>
+</head>
+<body style ="margin:0">
+<style>
+ #circle {
+      width: 50px;
+      height: 50px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: black;
+      border-color: black;
+    }
+</style>
+<canvas id="canvasDiv">
+    Install Chrome
+    </canvas>
+    <div style="padding:30px">
+    
+    <div  style='float:left'>
+        Width
+    <input type ='range' min='5' value='20' max='50' step='1' onInput="setWidth(this.value)">
+    
+    <!-- <button OnClick="Change">Change</button> -->
+    <br>
+    Color
+    <input class="jscolor {onFineChange:'update(this)'}" value="000000">
+
+</div>
+<div id="circle" style='float:left; margin : 10px' ></div>
+</div>
+</body>
