@@ -187,6 +187,7 @@ $( document ).ready(function() {
       clickDrag.push(dragging);
     }
     $('#canvas').mousedown(function(e){
+        alert('called');
         var button = e.which || e.button;
         if (button === 1) {
             paintSprayer = true;
