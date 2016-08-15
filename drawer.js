@@ -261,12 +261,13 @@ $( document ).ready(function() {
 
     canvas.addEventListener("touchstart", function (e) {
         mousedownousePos = getTouchPos(canvas, e);
-        alert('start');
+        // alert('start');
           var touch = e.touches[0];
           var mouseEvent = new MouseEvent("mousedown", {
             pageX: touch.clientX,
             pageY: touch.clientY,
             which : 1,
+            button : 1
           });
           canvas.dispatchEvent(mouseEvent);
         }, false);
@@ -280,7 +281,8 @@ canvas.addEventListener("touchmove", function (e) {
   var touch = e.touches[0];
   var mouseEvent = new MouseEvent("mousemove", {
     clientX: touch.clientX,
-    clientY: touch.clientY
+    clientY: touch.clientY,
+    button : 1
   });
   
   canvas.dispatchEvent(mouseEvent);
