@@ -146,6 +146,7 @@ $( document ).ready(function() {
             dropTime = (new Date()).getTime();
           }
         }
+        curSpeed /= 2;
     }
 
     }, 1);
@@ -186,36 +187,70 @@ $( document ).ready(function() {
       clickDrag.push(dragging);
     }
     $('#canvas').mousedown(function(e){
-      paintSprayer = true;
-      curSpeed = shift;
-          shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-          curSpeed += shift + oldshift + prevshift;
-          curSpeed /= 4;
-          prevshift = oldshift; 
-          oldshift = shift;
-        // }
-        X = e.pageX - this.offsetLeft;
-        Y = e.pageY - this.offsetTop;
+        var button = e.which || e.button;
+        if (button === 1) {
+            paintSprayer = true;
+            curSpeed = shift;
+            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+            curSpeed += shift + oldshift + prevshift;
+            curSpeed /= 4;
+            prevshift = oldshift; 
+            oldshift = shift;
+            // }
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - this.offsetTop;
+        }
     });
 
     $('#canvas').mousemove(function(e){
-      // if (paintSprayer) 
-      //   {
-      curSpeed = shift;
-      shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-      curSpeed += shift + oldshift + prevshift;
-      curSpeed /= 4;
-      prevshift = oldshift; 
-      oldshift = shift;
-        // }
-        X = e.pageX - this.offsetLeft;
-        Y = e.pageY - this.offsetTop;
+        var button = e.which || e.button;
+        if (button === 1) {
+            curSpeed = shift;
+            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+            curSpeed += shift + oldshift + prevshift;
+            curSpeed /= 4;
+            prevshift = oldshift; 
+            oldshift = shift;
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - this.offsetTop;
+        }
+    });
+    $('#canvas').click(function(e){
+        var button = e.which || e.button;
+        if (button === 1) {
+            curSpeed = shift;
+            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+            curSpeed += shift + oldshift + prevshift;
+            curSpeed /= 4;
+            prevshift = oldshift; 
+            oldshift = shift;
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - this.offsetTop;
+        }
+    });
+    
+    $('#canvas').touchmove(function(e){
+        var button = e.which || e.button;
+        if (button === 1) {
+            curSpeed = shift;
+            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+            curSpeed += shift + oldshift + prevshift;
+            curSpeed /= 4;
+            prevshift = oldshift; 
+            oldshift = shift;
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - this.offsetTop;
+        }
     });
     $('#canvas').mouseup(function(e){
-      paintSprayer = false;
-      dropTime = 0;
-      curDrop.startY = -1;
+        var button = e.which || e.button;
+        if (button === 1) {
+            paintSprayer = false;
+            dropTime = 0;
+            curDrop.startY = -1;
+        }
     });
+
     $('#canvas').mouseleave(function(e){
       paintSprayer = false;
       dropTime = 0;
