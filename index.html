@@ -15,8 +15,17 @@
       background: black;
       border-color: black;
     }
+.canvas {
+    cursor: crosshair;
+} 
+.can {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
 </style>
-<canvas id="canvasDiv">
+<canvas id="canvasDiv" class = 'canvas'>
     Install Chrome
     </canvas>
     <div style="padding:30px">
@@ -28,9 +37,13 @@
     <!-- <button OnClick="Change">Change</button> -->
     <br>
     Color
-    <input class="jscolor {onFineChange:'update(this)'}" value="000000">
+    <input id='picker' class="jscolor {onFineChange:'update(this)'}" value="000000">
 
 </div>
-<div id="circle" style='float:left; margin : 10px' ></div>
+<div id="circle" style='float:left; margin : 10px' onclick="document.getElementById('picker').jscolor.show()" ></div>
+</div>
+<button onclick='addToPallete(curColor)'> + </button>
+<br><br><br>
+<div id="pallete" style= ></div>
 </div>
 </body>
