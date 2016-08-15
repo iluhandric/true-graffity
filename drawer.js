@@ -11,19 +11,16 @@ curDrop = {
 }
 function update(picker) {
     setColor('#' + picker);
-    console.log(picker);
 }
 function setColor(color){
     curColor = color;
     preview.style.background = color;
-    console.log(curColor);
 }
 function setWidth(w){
     curWidth = w;
     preview.style.width = w;
     preview.style.height = w;
     preview.style.borderRadius = w/2 + 'px';
-    console.log(preview.style);
 }
 
 function Gauss() {
@@ -62,13 +59,12 @@ $( document ).ready(function() {
     canvasHeight = 300;
     var X, Y;   
 
-    
-    window.setInterval(function(){
+    function draw (){
       if (paintSprayer) {
         canvas = document.createElement('canvas');
 
         // context.globalCompositeOperation = 'source-over';
-        
+        console.log('paint', X, Y);
         context.beginPath();
 
         context.lineWidth = curWidth;
@@ -147,9 +143,11 @@ $( document ).ready(function() {
           }
         }
         curSpeed /= 2;
+        }
     }
 
-    }, 1);
+    window.setInterval(function (){draw()}, 1);
+    
     canvas.setAttribute('width', $(window).innerWidth());
     canvas.setAttribute('height', $(window).innerHeight()*0.7);
     canvas.setAttribute('id', 'canvas');
@@ -189,25 +187,28 @@ $( document ).ready(function() {
     $('#canvas').mousedown(function(e){
         
         var button = e.which || e.button;
-        alert(button);
-        if (button === 1) {
+        if (button === 1 || e.isTouch) {
+            console.log("mousedown");
             paintSprayer = true;
-            curSpeed = shift;
-            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-            curSpeed += shift + oldshift + prevshift;
-            curSpeed /= 4;
-            prevshift = oldshift; 
-            oldshift = shift;
+            // curSpeed = shift;
+            // shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
+            // curSpeed += shift + oldshift + prevshift;
+            // curSpeed /= 4;
+            // prevshift = oldshift; 
+            // oldshift = shift;
             // }
             X = e.pageX - this.offsetLeft;
             Y = e.pageY - this.offsetTop;
+            // console.log(X, Y);
         }
     });
 
     $('#canvas').mousemove(function(e){
         var button = e.which || e.button;
-        if (button === 1) {
+        console.log('moved');
+        if (button === 1 || e.isTouch) {
             curSpeed = shift;
+            console.log('moved');
             shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
             curSpeed += shift + oldshift + prevshift;
             curSpeed /= 4;
@@ -217,36 +218,10 @@ $( document ).ready(function() {
             Y = e.pageY - this.offsetTop;
         }
     });
-    // $('#canvas').click(function(e){
-    //     var button = e.which || e.button;
-    //     if (button === 1) {
-    //         curSpeed = shift;
-    //         shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-    //         curSpeed += shift + oldshift + prevshift;
-    //         curSpeed /= 4;
-    //         prevshift = oldshift; 
-    //         oldshift = shift;
-    //         X = e.pageX - this.offsetLeft;
-    //         Y = e.pageY - this.offsetTop;
-    //     }
-    // });
-   //  $('#canvas').on('touchmove',function(e){
-   //          curSpeed = shift;
-   //          shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop));
-   //          curSpeed += shift + oldshift + prevshift;
-   //          curSpeed /= 4;
-   //          prevshift = oldshift; 
-   //          oldshift = shift;
-   //          X = e.pageX - this.offsetLeft;
-   //          Y = e.pageY - this.offsetTop;
-
-   // }); 
-    // $('#canvas').touchmove(function(e){
-           
-    // });
     $('#canvas').mouseup(function(e){
         var button = e.which || e.button;
-        if (button === 1) {
+        console.log('mouseup');
+        if (button === 1 || e.isTouch) {
             paintSprayer = false;
             dropTime = 0;
             curDrop.startY = -1;
@@ -261,31 +236,52 @@ $( document ).ready(function() {
 
 
     canvas.addEventListener("touchstart", function (e) {
-        mousedownousePos = getTouchPos(canvas, e);
+        // mousedownousePos = getTouchPos(canvas, e);
         // alert('start');
           var touch = e.touches[0];
           var mouseEvent = new MouseEvent("mousedown", {
             pageX: touch.clientX,
             pageY: touch.clientY,
             which : 1,
-            button : 1
+            button : 1,
+            isTouch : 1
           });
           canvas.dispatchEvent(mouseEvent);
+          // draw();
         }, false);
 
 canvas.addEventListener("touchend", function (e) {
-  var mouseEvent = new MouseEvent("mouseup", {});
+  // draw();
+  console.log('touchend');
+    paintSprayer = false;
+
+  var mouseEvent = new MouseEvent("mouseup", {isTouch : 1});
   canvas.dispatchEvent(mouseEvent);
 }, false);
 
 canvas.addEventListener("touchmove", function (e) {
   var touch = e.touches[0];
-  var mouseEvent = new MouseEvent("mousemove", {
-    clientX: touch.clientX,
-    clientY: touch.clientY,
-    button : 1
-  });
   
-  canvas.dispatchEvent(mouseEvent);
+  console.log("touchmove");
+  // var mouseEvent = new MouseEvent("mousemove", {
+  //   pageX: touch.clientX,
+  //   pageY: touch.clientY,
+  //   which : 1,
+  //   button : 1,
+  //   isTouch : 1
+  // });
+  // canvas.dispatchEvent(mouseEvent);
+  curSpeed = shift;
+    // console.log('moved');
+    shift = Math.sqrt((X - touch.clientX + this.offsetLeft)*(X - touch.clientX + this.offsetLeft) + (Y - touch.clientY + this.offsetTop)*(Y - touch.clientY + this.offsetTop));
+    curSpeed += shift + oldshift + prevshift;
+    curSpeed /= 4;
+    prevshift = oldshift; 
+    oldshift = shift;
+    X = touch.clientX - this.offsetLeft;
+    Y = touch.clientY - this.offsetTop;
+    console.log(X, Y)
+    paintSprayer = true;
+  // draw();
 }, false);
 });
