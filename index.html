@@ -5,7 +5,7 @@
 <script src='./drawer.js'>
 </script>
 </head>
-<body style ="margin:0">
+<body  onkeydown='controlWidth(event)' style ="margin:0">
 <style>
  #circle {
       width: 50px;
@@ -24,9 +24,14 @@
     height: 50px;
     border-radius: 25px;
 }
+.btn:focus {
+  outline: none;
+}
+.btn:active {
+  outline: none !important;
+}
 #pallete {
-    /*background-image: url("https://media.freestocktextures.com/cache/b4/13/b41378848a0c17575cec2200df8c36c1.jpg");*/
-    background-color: rgb(230, 230, 200);
+    background-color: rgb(230, 230, 230);
     border : 2px solid #ffffff;
     border-radius: 5px;
     height: auto;
@@ -38,33 +43,36 @@
 </style>
 <canvas id="canvasDiv" class = 'canvas'>
     Install Chrome
-    </canvas>
-    <div style="padding:30px">
+</canvas>
+<div style="padding:30px">     
     
-    <div  style='float:left'>
-        Width
-    <input type ='range' min='5' value='20' max='50' step='1' onInput="setWidth(this.value)">
     
-    <!-- <button OnClick="Change">Change</button> -->
-    <br>
-    Color
-    <input id='picker' class="jscolor {onFineChange:'update(this)'}" value="000000">
-
-</div>
-
-<div style='width:150px;float:left;'>
-    <div align = "center"id="circle" style=' margin : 10px' onclick="document.getElementById('picker').jscolor.show()" ></div>
-</div>
-<button style='float:left' onclick='addToPallete(curColor)'  type="button" class="btn btn-default"> 
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    Save to pallete
-</button>
-<div id="pallete" style='float:left'></div>
-</div>
-
-
-<br><br><br>
-<br><br><br>
-
+    <div  class="panel panel-default" style='float:left; margin-left:20px;margin-right:20px;width:230px'>
+        <div class="panel-heading">
+        Spot
+            <button onclick='addToPallete(curColor)'  type="button" class="btn btn-default" style = "float:right;margin-left:20px"> 
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Save color
+            </button>
+            <br>
+            <br>
+            <input id='widthRange' type ='range' min='4' value='20' max='50' step='1' onInput="setWidth(this.value)">
+        </div>
+        <div  class="panel-body">
+            <button align = "center" id="circle"  class="btn btn-circle btn-xs jscolor {valueElement:null,value:'000000',onFineChange:'update(this)'} w3-btn-floating w3-teal" 
+            style="border:0px solid black" >
+            </button>
+        </div>
+    </div>
+    <div  class="panel panel-default" style='margin-left:20px; overflow:hidden;'>
+        <div class="panel-heading">
+            Cans
+        </div>
+        <div id="pallete" class="panel-body" style="padding-button: 300px !important">
+            <h3 id='emptyBar' style='margin-left:20px;color:#555555'>
+                No saved cans! Click "Save color"!
+            <h3>
+        </div>
+    </div>
 </div>
 </body>

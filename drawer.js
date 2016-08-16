@@ -1,8 +1,12 @@
 var curColor = '#000000';
-var curWidth = 50;
+var curWidth = 20;
 var dropTime = 0;
+var maxWidth = 50;
+var minWidth = 4;
+
 var preview = document.getElementById('circle');
 var pallete = document.getElementById('pallete');
+var widthRange = document.getElementById('widthRange');
 var palleteColors = [];
 curDrop = {
   X : -1,
@@ -19,19 +23,35 @@ function setColor(color){
     curColor = color;
     // console.log('dsda');
     preview.style.background = color;
-    var picker = document.getElementById('picker');
-    picker.value = color.substr(1, 6);
-    picker.style.backgroundColor = color
+    // var picker = document.getElementById('picker');
+    // picker.value = color.substr(1, 6);
+    // picker.style.backgroundColor = color
     // console.log(picker);
     // picker = color;
 }
 
 
 function setWidth(w){
-    curWidth = w;
+    curWidth = parseInt(w);
     preview.style.width = 2.4*w;
     preview.style.height = 2.4*w;
     preview.style.borderRadius = w*1.2 + 'px';
+    preview.style.marginLeft = 100 -  w*1.2 + 'px'
+    // console.log(curWidth);
+    widthRange.value = curWidth;
+}
+
+function controlWidth (e) {
+    if (e.keyCode === 87) {
+        // console.log(curWidth, maxWidth);
+        var neww = curWidth+1;
+        // curWidth = Math.min(curWidth+1, maxWidth);
+        setWidth(Math.min(curWidth+1, maxWidth));
+    }
+    if (e.keyCode === 83) {
+        setWidth(Math.max(curWidth-1, minWidth));
+    }
+    widthRange.value = curWidth;
 }
 
 function createCan(color) {
@@ -41,7 +61,7 @@ function createCan(color) {
     newCan.style.width = 50 + 'px';
     newCan.style.display = 'block';
     newCan.style.float = 'left';
-    newCan.style.margin = '2px';
+    newCan.style.margin = '3px';
     newCan.style.height = 50 + 'px';
     newCan.style.background = color;
     newCan.style.boxShadow =  '5px 5px 0px #333333';
@@ -76,11 +96,16 @@ function createCan(color) {
 }
 
 function addToPallete(color) {
+    if (document.getElementById('emptyBar') !== null) {
+        document.getElementById('pallete').removeChild(document.getElementById('emptyBar'));
+    }
     if (palleteColors.indexOf(color) === -1) {
         pallete.appendChild(createCan(color));
         palleteColors.push(color);
     }
 }
+
+
 
 function Gauss() {
   var ready = false;
@@ -111,7 +136,8 @@ function Gauss() {
 }
 
 $( document ).ready(function() {
-    
+    widthRange = document.getElementById('widthRange');
+
     var canvas = document.getElementById('canvasDiv');
     // canvas = document.createElement('canvas');
     canvasWidth = 300;
@@ -125,6 +151,7 @@ $( document ).ready(function() {
         // context.globalCompositeOperation = 'source-over';
         // console.log('paint', X, Y);
         context.beginPath();
+        // console.log(curWidth);
 
         context.lineWidth = curWidth;
 
@@ -142,7 +169,7 @@ $( document ).ready(function() {
         g  = new Gauss();
 
         
-        for (i = 0; i < curWidth*curWidth/2; i++) {
+        for (i = 0; i < 50; i++) { //curWidth*curWidth/2
           context.beginPath();
           range = 1600;
           var randomAngle = Math.random() * 360;
@@ -152,7 +179,7 @@ $( document ).ready(function() {
           // context.globalAlpha = 0.3 + (Math.random()-0.5)* Math.sqrt(curWidth/200)/randomRadius;
           
 
-          while ((Math.abs(randomRadius) > curWidth*1.2)||(Math.abs(randomRadius) < curWidth/10 && Math.random() * 5 > 1)) {
+          while ((Math.abs(randomRadius) > curWidth*1)||(Math.abs(randomRadius) < curWidth/10 && Math.random() * 5 > 1)) {
              randomRadius = g.next((Math.random()-0.5)*3,  Math.sqrt(range * curWidth));
           }
           var x = Math.cos(randomAngle) * randomRadius;
@@ -167,46 +194,75 @@ $( document ).ready(function() {
         
 
         // console.log(curSpeed);
-        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 1800) {
+        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 900) {
             var newDrop = curDrop;
-            if (Math.abs(X - curDrop.startX) > curWidth/2) {
+            if (Math.abs(X - curDrop.startX) > curWidth/2 || 
+                Math.abs(Y - curDrop.startY) > curWidth/2) {
               dropTime = (new Date()).getTime();   
-              curDrop.startY = -1;          
-            }
-            if (curDrop.startY === -1 || curDrop.startX === -1) {
-              newDrop.X = X;
-              newDrop.Y = Y + context.lineWidth;
+              // newDrop.startY = -1;
+              newDrop.put = false;
               newDrop.startX = X;
-              newDrop.startY = Y + context.lineWidth;
-              newDrop.speed = 10;              
+              newDrop.startY = Y;
+              newDrop.X = X;
+
+              newDrop.Y = Y + context.lineWidth;
+            // }
             } else {
-              newDrop.X = curDrop.X + (Math.random() - 0.5) * newDrop.speed / 3;
-              newDrop.Y = curDrop.Y + (Math.random()) * newDrop.speed / 5;
-              newDrop.speed *= 0.99;
-              if (newDrop.speed < 1) {
-                newDrop.speed = 1;
-              }
+                // console.log(curDrop.startY);
+                if (curDrop.startY === -1 || curDrop.startX === -1) {
+                  newDrop.X = X;
+                  newDrop.put = true;
+                  newDrop.Y = Y + context.lineWidth;
+                  newDrop.startX = X;
+                  newDrop.startY = Y + context.lineWidth;
+                  newDrop.speed = 10;              
+                } else {
+                  newDrop.X = curDrop.X + (Math.random() - 0.5) * newDrop.speed / 3;
+                  newDrop.Y = curDrop.Y + (Math.random()) * newDrop.speed / 5;
+                  newDrop.speed *= 0.99;
+                  newDrop.put = true;
+              //     newDrop.startX = X;
+              // newDrop.startY = Y;
+                  if (newDrop.speed < 1) {
+                    newDrop.speed = 1;
+                  }
+                }
             }
-            context.beginPath();
-            context.globalAlpha = 0.5;
-            context.arc(newDrop.X, newDrop.Y, 
-                        3, 0, Math.PI*2)
-            context.fill();
-            context.closePath();
-            curDrop = newDrop;
+            if ( newDrop.put) {
+                context.beginPath();
+                context.globalAlpha = 0.5;
+                context.arc(newDrop.X, newDrop.Y, 
+                            2, 0, Math.PI*2)
+                context.fill();
+                // console.log(newDrop.X, newDrop.Y);
+                context.closePath();
+                curDrop = newDrop;
+            }
         } else {
           if (curSpeed <= 1.5 && dropTime === 0) {
             dropTime = (new Date()).getTime();
+            // console.log("first");
+            curDrop.startY = Y;
+            curDrop.startX = X;
+            curDrop.Y = Y;
+            curDrop.X = X;
+
           }
         }
         curSpeed /= 2;
         }
     }
 
+    // window.setInterval(function (){draw()}, 2);
+    // window.setInterval(function (){draw()}, 3);
     window.setInterval(function (){draw()}, 1);
+
+    // window.setInterval(function (){draw()}, 5);
+
+
     
     canvas.setAttribute('width', $(window).innerWidth());
-    canvas.setAttribute('height', $(window).innerHeight()*0.7);
+    canvas.setAttribute('height', $(window).innerHeight()*0.5);
     canvas.setAttribute('id', 'canvas');
     if(typeof G_vmlCanvasManager != 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
@@ -228,9 +284,11 @@ $( document ).ready(function() {
     var curSpeed = 0;
     pallete = document.getElementById('pallete');
     preview = document.getElementById('circle');
+    curWidth = 20;
+    setWidth(curWidth);
     var background = new Image();
     background.src = "http://color-complect.ru/wp-content/uploads/2012/08/strukturnaia-shtukaturka-53.jpg";
-
+    
     background.onload = function(){
         context.drawImage(background,0,0);   
     }
