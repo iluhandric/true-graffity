@@ -40,6 +40,34 @@
     width: auto
 }
 
+.module {
+  background: #ddd;
+  border: 100px solid #ccc;
+  margin: 10px;
+/*  > h2 {
+    padding: 1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  > p {
+    padding: 0 1rem;
+  }*/
+  /*animation: widen 10s linear alternate infinite;*/
+}
+
+.stripe-1 {
+  color: white;
+  background: repeating-linear-gradient(
+    45deg,
+    #bbb,
+    #bbb 10px,
+    #ddd 10px,
+    #ddd 20px
+  );
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+
 </style>
 <canvas id="canvasDiv" class = 'canvas'>
     Install Chrome
@@ -50,7 +78,7 @@
     <div  class="panel panel-default" style='float:left; margin-left:20px;margin-right:20px;width:230px'>
         <div class="panel-heading">
         Spot
-            <button onclick='addToPallete(curColor)'  type="button" class="btn btn-default" style = "float:right;margin-left:20px"> 
+            <button onclick='addToPallete(curColor)'  type="button" class="btn btn-success" style = "float:right;margin-left:20px"> 
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 Save color
             </button>
@@ -58,7 +86,7 @@
             <br>
             <input id='widthRange' type ='range' min='4' value='20' max='50' step='1' onInput="setWidth(this.value)">
         </div>
-        <div  class="panel-body">
+        <div  class="panel-body stripe-1">
             <button align = "center" id="circle"  class="btn btn-circle btn-xs jscolor {valueElement:null,value:'000000',onFineChange:'update(this)'} w3-btn-floating w3-teal" 
             style="border:0px solid black" >
             </button>
@@ -67,12 +95,16 @@
     <div  class="panel panel-default" style='margin-left:20px; overflow:hidden;'>
         <div class="panel-heading">
             Cans
+            <button onclick='emptyBar()'  type="button" class="btn btn-danger" style = "float:right;margin-left:20px"> 
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Empty bar
+            </button>
+            <br>
+            <br>
         </div>
-        <div id="pallete" class="panel-body" style="padding-button: 300px !important">
-            <h3 id='emptyBar' style='margin-left:20px;color:#555555'>
-                No saved cans! Click "Save color"!
-            <h3>
-        </div>
+            
+
+        <div id="pallete" class="panel-body" style=";color:#555555;padding-button: 300px !important">No saved cans! Click "Save color"!</div>
     </div>
 </div>
 </body>

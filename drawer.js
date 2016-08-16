@@ -96,13 +96,18 @@ function createCan(color) {
 }
 
 function addToPallete(color) {
-    if (document.getElementById('emptyBar') !== null) {
-        document.getElementById('pallete').removeChild(document.getElementById('emptyBar'));
+    if (pallete.innerHTML == 'No saved cans! Click "Save color"!') {
+        pallete.innerHTML = "";
     }
     if (palleteColors.indexOf(color) === -1) {
         pallete.appendChild(createCan(color));
         palleteColors.push(color);
     }
+}
+function emptyBar() {
+    palleteColors = [];
+    $( "#pallete" ).empty();
+     pallete.innerHTML = 'No saved cans! Click "Save color"!';
 }
 
 
@@ -194,7 +199,7 @@ $( document ).ready(function() {
         
 
         // console.log(curSpeed);
-        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 900) {
+        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 1100) {
             var newDrop = curDrop;
             if (Math.abs(X - curDrop.startX) > curWidth/2 || 
                 Math.abs(Y - curDrop.startY) > curWidth/2) {
@@ -204,6 +209,7 @@ $( document ).ready(function() {
               newDrop.startX = X;
               newDrop.startY = Y;
               newDrop.X = X;
+                  newDrop.speed = 10;              
 
               newDrop.Y = Y + context.lineWidth;
             // }
