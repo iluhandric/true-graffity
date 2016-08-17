@@ -1,5 +1,5 @@
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="jscolor.js"></script>
 <script src='./drawer.js'>
@@ -70,11 +70,19 @@
 
 </style>
 <canvas id="canvasDiv" class = 'canvas'>
-    Install Chrome
+    Your browser does not support canvas! Please, install Google Chrome and come back!
 </canvas>
-<div style="padding:30px">     
-    
-    
+<button class='btn' style='max-width:100%; width:100%' onclick='showControls(event)'>
+    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    Change can
+    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+</button>
+<div id='controls' style=" bottom:0px; background:rgba(255,255,255,0.7);  display:none; height:60%; width:100%; position:absolute"> 
+<!--     <div style='width:100%'>
+        <button style='float:right; font-size:20px;' onclick='showControls(event)' class="btn glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></button>
+    </div>   -->      
+    <br>
+
     <div  class="panel panel-default" style='float:left; margin-left:20px;margin-right:20px;width:230px'>
         <div class="panel-heading">
         Spot
@@ -92,7 +100,23 @@
             </button>
         </div>
     </div>
-    <div  class="panel panel-default" style='margin-left:20px; overflow:hidden;'>
+    <div  class="panel panel-default" style='float:left; margin-right:20px;width:230px'>
+        <div class="panel-heading">
+        Try paint here
+            <button onclick='emptyDraft()'  type="button" class="btn btn-danger" style = "float:right;margin-left:20px"> 
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                
+            </button>
+            <br>
+            <br>
+        </div>
+        <div  class="panel-body" style = 'padding:5px !important'>
+            <canvas id="smallDraft" class = 'canvas'>
+                Your browser does not support canvas! Please, install Google Chrome and come back!
+            </canvas>
+        </div>
+    </div>
+    <div  class="panel panel-default" style='margin-left:20px; margin-right:20px; overflow:hidden;'>
         <div class="panel-heading">
             Cans
             <button onclick='emptyBar()'  type="button" class="btn btn-danger" style = "float:right;margin-left:20px"> 
@@ -101,10 +125,15 @@
             </button>
             <br>
             <br>
-        </div>
-            
-
-        <div id="pallete" class="panel-body" style=";color:#555555;padding-button: 300px !important">No saved cans! Click "Save color"!</div>
+        </div>   
+        <div id="pallete" class="panel-body" style=";color:#555555;padding-button: 300px !important; height: 155px; overflow-y:scroll">No saved cans! Click "Save color"!</div>
     </div>
+    <button class='btn' style='bottom:0; left:0; position:absolute !important; width:100%' id="hideBtn" onclick='showControls(event)'>
+        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+        Hide
+        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+    </button>
+    
 </div>
+
 </body>

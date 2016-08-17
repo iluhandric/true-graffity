@@ -13,10 +13,30 @@ curDrop = {
   Y : -1,
   startX : -1,
   startY : -1,
-  speed : 8
+  speed : 5
 }
 function update(picker) {
     setColor('#' + picker);
+}
+
+function showControls(event) {
+    // $("#controls").slideToggle();
+    // $("#hideBtn").slideToggle({
+    //   direction: "up"
+    // }, 10);
+    $("#controls").slideToggle({
+      direction: "up"
+    }, 300);
+
+    // $("#controls").show("slide", { direction:"down" }, 500);
+    // $('#controlsButton').innerHTML = 'Hide controls'
+    event.stopPropagation();
+    // console.log('fdf');
+    // event.stopPropagation();
+    // event.stopPropagation();
+    // console.log('fdf');
+
+    // return false;
 }
 
 function setColor(color){
@@ -110,6 +130,20 @@ function emptyBar() {
      pallete.innerHTML = 'No saved cans! Click "Save color"!';
 }
 
+function emptyDraft() {
+    var cnvs = document.getElementById('smallDraft');
+    cnvs.getContext('2d').beginPath();
+    cnvs.getContext('2d').globalAlpha = 1;
+
+    // cnvs.getContext('2d').clearRect(0, 0, cnvs.width, cnvs.height);
+    cnvs.getContext('2d').clearRect(0, 0, cnvs.width, cnvs.height);
+    var draftBg = new Image();
+    draftBg.src = "http://allfreedesigns.com/wp-content/uploads/2013/01/cardboard-textures-3.jpg";
+    draftBg.onload = function(){
+    cnvs.getContext('2d').drawImage(draftBg,0,0);  
+    }
+    
+}
 
 
 function Gauss() {
@@ -141,17 +175,18 @@ function Gauss() {
 }
 
 $( document ).ready(function() {
+
     widthRange = document.getElementById('widthRange');
 
-    var canvas = document.getElementById('canvasDiv');
+    
     // canvas = document.createElement('canvas');
-    canvasWidth = 300;
-    canvasHeight = 300;
+    // canvasWidth = 300;
+    // canvasHeight = 300;
     var X, Y;   
 
-    function draw (){
-      if (paintSprayer) {
-        canvas = document.createElement('canvas');
+    function draw (canvas, context, drawing){
+      if (drawing) {
+        // canvas = document.createElement('canvas');
 
         // context.globalCompositeOperation = 'source-over';
         // console.log('paint', X, Y);
@@ -184,7 +219,7 @@ $( document ).ready(function() {
           // context.globalAlpha = 0.3 + (Math.random()-0.5)* Math.sqrt(curWidth/200)/randomRadius;
           
 
-          while ((Math.abs(randomRadius) > curWidth*1)||(Math.abs(randomRadius) < curWidth/10 && Math.random() * 5 > 1)) {
+          while ((Math.abs(randomRadius) > curWidth*1.1)||(Math.abs(randomRadius) < curWidth/10 && Math.random() * 5 > 1)) {
              randomRadius = g.next((Math.random()-0.5)*3,  Math.sqrt(range * curWidth));
           }
           var x = Math.cos(randomAngle) * randomRadius;
@@ -199,7 +234,7 @@ $( document ).ready(function() {
         
 
         // console.log(curSpeed);
-        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 1100) {
+        if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 1300) {
             var newDrop = curDrop;
             if (Math.abs(X - curDrop.startX) > curWidth/2 || 
                 Math.abs(Y - curDrop.startY) > curWidth/2) {
@@ -211,7 +246,7 @@ $( document ).ready(function() {
               newDrop.X = X;
                   newDrop.speed = 10;              
 
-              newDrop.Y = Y + context.lineWidth;
+              newDrop.Y = Y + context.lineWidth*1.1;
             // }
             } else {
                 // console.log(curDrop.startY);
@@ -220,12 +255,12 @@ $( document ).ready(function() {
                   newDrop.put = true;
                   newDrop.Y = Y + context.lineWidth;
                   newDrop.startX = X;
-                  newDrop.startY = Y + context.lineWidth;
+                  newDrop.startY = Y + context.lineWidth*1.1;
                   newDrop.speed = 10;              
                 } else {
                   newDrop.X = curDrop.X + (Math.random() - 0.5) * newDrop.speed / 3;
                   newDrop.Y = curDrop.Y + (Math.random()) * newDrop.speed / 5;
-                  newDrop.speed *= 0.99;
+                  newDrop.speed *= 0.985;
                   newDrop.put = true;
               //     newDrop.startX = X;
               // newDrop.startY = Y;
@@ -250,7 +285,7 @@ $( document ).ready(function() {
             // console.log("first");
             curDrop.startY = Y;
             curDrop.startX = X;
-            curDrop.Y = Y;
+            curDrop.Y = Y + context.lineWidth*1.1;
             curDrop.X = X;
 
           }
@@ -261,28 +296,36 @@ $( document ).ready(function() {
 
     // window.setInterval(function (){draw()}, 2);
     // window.setInterval(function (){draw()}, 3);
-    window.setInterval(function (){draw()}, 1);
+    var canvas = document.getElementById('canvasDiv');
 
     // window.setInterval(function (){draw()}, 5);
 
-
+    var smallDraft = document.getElementById('smallDraft');
+    var smallContext = smallDraft.getContext("2d");
+    var canvas = document.getElementById('canvasDiv');
+    var context = canvas.getContext("2d");
+    window.setInterval(function (){draw(canvas, context, paintSprayer)}, 1);
+    var draftSprayer = false;
+    window.setInterval(function (){draw(smallDraft, smallContext, draftSprayer)}, 1);
     
     canvas.setAttribute('width', $(window).innerWidth());
-    canvas.setAttribute('height', $(window).innerHeight()*0.5);
+    canvas.setAttribute('height', $(window).innerHeight()-34);
+
+    smallDraft.setAttribute('width', 218);
+    smallDraft.setAttribute('height', 165);
+
     canvas.setAttribute('id', 'canvas');
     if(typeof G_vmlCanvasManager != 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
     }
-    context = canvas.getContext("2d");
+
+    if(typeof G_vmlCanvasManager != 'undefined') {
+        smallDraft = G_vmlCanvasManager.initElement(smallDraft);
+    }
+    
     context.beginPath();
-    context.fillStyle = '#ffffff';
-
-    var clickX = new Array();
-    var clickY = new Array();
-    var colors = new Array();
-    var widths = new Array();
-
-    var clickDrag = new Array();
+    smallContext.beginPath();
+    // context.fillStyle = '#ffffff';
     var paintSprayer;
     var shift = 0;
     var oldshift = 0;
@@ -293,18 +336,20 @@ $( document ).ready(function() {
     curWidth = 20;
     setWidth(curWidth);
     var background = new Image();
-    background.src = "http://color-complect.ru/wp-content/uploads/2012/08/strukturnaia-shtukaturka-53.jpg";
+    background.src = "http://previews.123rf.com/images/eugenesergeev/eugenesergeev1310/eugenesergeev131000315/23310840-Light-gray-rough-concrete-wall-Seamless-background-photo-texture-Stock-Photo.jpg";
+
+    emptyDraft();
+    // var draftBg = new Image();
+    // draftBg.src = "http://color-complect.ru/wp-content/uploads/2012/08/strukturnaia-shtukaturka-53.jpg";
     
     background.onload = function(){
         context.drawImage(background,0,0);   
     }
 
-    function addClick(x, y, dragging)
-    {
-      clickX.push(x);
-      clickY.push(y);
-      clickDrag.push(dragging);
-    }
+    // draftBg.onload = function(){
+    //     smallContext.drawImage(draftBg,0,0);   
+    // }
+
     $('#canvas').mousedown(function(e){
         
         var button = e.which || e.button;
@@ -313,6 +358,8 @@ $( document ).ready(function() {
             paintSprayer = true;
             X = e.pageX - this.offsetLeft;
             Y = e.pageY - this.offsetTop;
+            console.log(X, Y);
+
         }
     });
 
@@ -381,5 +428,89 @@ canvas.addEventListener("touchmove", function (e) {
     Y = touch.clientY - this.offsetTop;
     console.log(X, Y)
     paintSprayer = true;
+}, false);
+
+$('#smallDraft').mousedown(function(e){
+            console.log("mousedown");
+        
+        var button = e.which || e.button;
+        if (button === 1 || e.isTouch) {
+            // console.log("mousedown");
+            draftSprayer = true;
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - $('#smallDraft').offset().top;
+            console.log(X, Y);
+            console.log(e.pageY);
+            console.log(this.offsetTop);
+
+
+        }
+    });
+
+    $('#smallDraft').mousemove(function(e){
+        var button = e.which || e.button;
+        // console.log('moved');
+        if (button === 1 || e.isTouch) {
+            curSpeed = shift;
+            // console.log('moved');
+            shift = Math.sqrt((X - e.pageX + this.offsetLeft)*(X - e.pageX + this.offsetLeft) + (Y - e.pageY + this.offsetTop)*(Y - e.pageY + this.offsetTop + 263));
+            curSpeed += shift + oldshift + prevshift;
+            curSpeed /= 4;
+            prevshift = oldshift; 
+            oldshift = shift;
+            X = e.pageX - this.offsetLeft;
+            Y = e.pageY - $('#smallDraft').offset().top;
+        }
+    });
+    $('#smallDraft').mouseup(function(e){
+        var button = e.which || e.button;
+        // console.log('mouseup');
+        if (button === 1 || e.isTouch) {
+            draftSprayer = false;
+            dropTime = 0;
+            curDrop.startY = -1;
+        }
+    });
+
+    $('#smallDraft').mouseleave(function(e){
+      draftSprayer = false;
+      dropTime = 0;
+      curDrop.startY = -1;
+    });
+
+
+    smallDraft.addEventListener("touchstart", function (e) {
+
+          var touch = e.touches[0];
+          var mouseEvent = new MouseEvent("mousedown", {
+            pageX: touch.clientX,
+            pageY: touch.clientY,
+            which : 1,
+            button : 1,
+            isTouch : 1
+          });
+          smallDraft.dispatchEvent(mouseEvent);
+        }, false);
+
+smallDraft.addEventListener("touchend", function (e) {
+    draftSprayer = false;
+
+    var mouseEvent = new MouseEvent("mouseup", {isTouch : 1});
+    smallDraft.dispatchEvent(mouseEvent);
+}, false);
+
+smallDraft.addEventListener("touchmove", function (e) {
+    var touch = e.touches[0];
+    curSpeed = shift;
+    shift = Math.sqrt(  (X - touch.clientX + this.offsetLeft)*(X - touch.clientX + this.offsetLeft) + 
+                        (Y - touch.clientY + this.offsetTop)*(Y - touch.clientY + this.offsetTop));
+    curSpeed += shift + oldshift + prevshift;
+    curSpeed /= 4;
+    prevshift = oldshift; 
+    oldshift = shift;
+    X = touch.clientX - this.offsetLeft;
+    Y = touch.clientY - this.offsetTop;
+    console.log(X, Y)
+    draftSprayer = true;
 }, false);
 });
