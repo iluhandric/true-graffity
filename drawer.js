@@ -20,34 +20,22 @@ function update(picker) {
 }
 
 function showControls(event) {
-    // $("#controls").slideToggle();
-    // $("#hideBtn").slideToggle({
-    //   direction: "up"
-    // }, 10);
     $("#controls").slideToggle({
       direction: "up"
     }, 300);
-
-    // $("#controls").show("slide", { direction:"down" }, 500);
-    // $('#controlsButton').innerHTML = 'Hide controls'
     event.stopPropagation();
-    // console.log('fdf');
-    // event.stopPropagation();
-    // event.stopPropagation();
-    // console.log('fdf');
 
-    // return false;
 }
 
 function setColor(color){
     curColor = color;
-    // console.log('dsda');
     preview.style.background = color;
-    // var picker = document.getElementById('picker');
-    // picker.value = color.substr(1, 6);
-    // picker.style.backgroundColor = color
-    // console.log(picker);
-    // picker = color;
+}
+
+function toggleShare(color){
+    console.log('share');
+    $("#shareButtons").slideToggle({}, 1000);
+    event.stopPropagation();
 }
 
 
@@ -57,15 +45,11 @@ function setWidth(w){
     preview.style.height = 2.4*w;
     preview.style.borderRadius = w*1.2 + 'px';
     preview.style.marginLeft = 100 -  w*1.2 + 'px'
-    // console.log(curWidth);
     widthRange.value = curWidth;
 }
 
 function controlWidth (e) {
     if (e.keyCode === 87) {
-        // console.log(curWidth, maxWidth);
-        var neww = curWidth+1;
-        // curWidth = Math.min(curWidth+1, maxWidth);
         setWidth(Math.min(curWidth+1, maxWidth));
     }
     if (e.keyCode === 83) {
@@ -95,11 +79,8 @@ function createCan(color) {
     top.style.margin = '11px';
     top.style.height = 20 + 'px';
     top.style.background = '#333333';
-    // top.style.boxShadow =  '1px 1px 0px #333333';
     var whiteTop = document.createElement("div");
-    // whiteTop.style.border = "thick solid #999999";
     whiteTop.style.borderRadius = 30 + 'px';
-    // whiteTop.style.borderWidth = 3 + 'px';
     whiteTop.style.width = 8 + 'px';
     whiteTop.style.display = 'block';
     whiteTop.style.float = 'left';
@@ -134,17 +115,13 @@ function emptyDraft() {
     var cnvs = document.getElementById('smallDraft');
     cnvs.getContext('2d').beginPath();
     cnvs.getContext('2d').globalAlpha = 1;
-
-    // cnvs.getContext('2d').clearRect(0, 0, cnvs.width, cnvs.height);
     cnvs.getContext('2d').clearRect(0, 0, cnvs.width, cnvs.height);
     var draftBg = new Image();
     draftBg.src = "http://allfreedesigns.com/wp-content/uploads/2013/01/cardboard-textures-3.jpg";
     draftBg.onload = function(){
-    cnvs.getContext('2d').drawImage(draftBg,0,0);  
+        cnvs.getContext('2d').drawImage(draftBg,0,0);  
     }
-    
 }
-
 
 function Gauss() {
   var ready = false;
@@ -178,20 +155,13 @@ $( document ).ready(function() {
 
     widthRange = document.getElementById('widthRange');
 
-    
-    // canvas = document.createElement('canvas');
-    // canvasWidth = 300;
-    // canvasHeight = 300;
     var X, Y;   
+
+    // document.getElementById('vkShare').href = "http://vkontakte.ru/share.php?url=" + 
 
     function draw (canvas, context, drawing){
       if (drawing) {
-        // canvas = document.createElement('canvas');
-
-        // context.globalCompositeOperation = 'source-over';
-        // console.log('paint', X, Y);
         context.beginPath();
-        // console.log(curWidth);
 
         context.lineWidth = curWidth;
 
@@ -222,51 +192,44 @@ $( document ).ready(function() {
           while ((Math.abs(randomRadius) > curWidth*1.1)||(Math.abs(randomRadius) < curWidth/10 && Math.random() * 5 > 1)) {
              randomRadius = g.next((Math.random()-0.5)*3,  Math.sqrt(range * curWidth));
           }
+
           var x = Math.cos(randomAngle) * randomRadius;
           var y = Math.sin(randomAngle) * randomRadius;
           context.globalAlpha = 1 - Math.random() - 0.6*Math.abs(randomRadius/curWidth);
-          // console.log(randomRadius, context.globalAlpha, 0.6 - Math.random()*0.1 - 0.6*Math.abs(randomRadius/curWidth));
           context.fillRect(X+x,Y+y,1,1);
           context.fill();
           context.closePath()
         }
 
         
-
-        // console.log(curSpeed);
         if (dropTime && curSpeed <= 1.1 && (new Date()).getTime() - dropTime > 1300) {
             var newDrop = curDrop;
             if (Math.abs(X - curDrop.startX) > curWidth/2 || 
                 Math.abs(Y - curDrop.startY) > curWidth/2) {
-              dropTime = (new Date()).getTime();   
-              // newDrop.startY = -1;
-              newDrop.put = false;
-              newDrop.startX = X;
-              newDrop.startY = Y;
-              newDrop.X = X;
-                  newDrop.speed = 10;              
-
-              newDrop.Y = Y + context.lineWidth*1.1;
-            // }
+                dropTime = (new Date()).getTime();   
+                newDrop.put = false;
+                newDrop.startX = X;
+                newDrop.startY = Y;
+                newDrop.X = X;
+                newDrop.speed = 10;              
+                newDrop.Y = Y + context.lineWidth*1.1;
             } else {
                 // console.log(curDrop.startY);
                 if (curDrop.startY === -1 || curDrop.startX === -1) {
-                  newDrop.X = X;
-                  newDrop.put = true;
-                  newDrop.Y = Y + context.lineWidth;
-                  newDrop.startX = X;
-                  newDrop.startY = Y + context.lineWidth*1.1;
-                  newDrop.speed = 10;              
+                    newDrop.X = X;
+                    newDrop.put = true;
+                    newDrop.Y = Y + context.lineWidth;
+                    newDrop.startX = X;
+                    newDrop.startY = Y + context.lineWidth*1.1 - newDrop.speed / 5;
+                    newDrop.speed = 10;              
                 } else {
-                  newDrop.X = curDrop.X + (Math.random() - 0.5) * newDrop.speed / 3;
-                  newDrop.Y = curDrop.Y + (Math.random()) * newDrop.speed / 5;
-                  newDrop.speed *= 0.985;
-                  newDrop.put = true;
-              //     newDrop.startX = X;
-              // newDrop.startY = Y;
-                  if (newDrop.speed < 1) {
-                    newDrop.speed = 1;
-                  }
+                    newDrop.X = curDrop.X + (Math.random() - 0.5) * newDrop.speed / 3;
+                    newDrop.Y = curDrop.Y + (Math.random()) * newDrop.speed / 5;
+                    newDrop.speed *= 0.985;
+                    newDrop.put = true;
+                    if (newDrop.speed < 1) {
+                        newDrop.speed = 1;
+                    }
                 }
             }
             if ( newDrop.put) {
@@ -275,31 +238,23 @@ $( document ).ready(function() {
                 context.arc(newDrop.X, newDrop.Y, 
                             2, 0, Math.PI*2)
                 context.fill();
-                // console.log(newDrop.X, newDrop.Y);
                 context.closePath();
                 curDrop = newDrop;
             }
         } else {
           if (curSpeed <= 1.5 && dropTime === 0) {
             dropTime = (new Date()).getTime();
-            // console.log("first");
             curDrop.startY = Y;
             curDrop.startX = X;
             curDrop.Y = Y + context.lineWidth*1.1;
             curDrop.X = X;
-
           }
         }
         curSpeed /= 2;
         }
     }
 
-    // window.setInterval(function (){draw()}, 2);
-    // window.setInterval(function (){draw()}, 3);
     var canvas = document.getElementById('canvasDiv');
-
-    // window.setInterval(function (){draw()}, 5);
-
     var smallDraft = document.getElementById('smallDraft');
     var smallContext = smallDraft.getContext("2d");
     var canvas = document.getElementById('canvasDiv');
@@ -312,7 +267,7 @@ $( document ).ready(function() {
     canvas.setAttribute('height', $(window).innerHeight()-34);
 
     smallDraft.setAttribute('width', 218);
-    smallDraft.setAttribute('height', 165);
+    smallDraft.setAttribute('height', 190);
 
     canvas.setAttribute('id', 'canvas');
     if(typeof G_vmlCanvasManager != 'undefined') {
@@ -325,7 +280,7 @@ $( document ).ready(function() {
     
     context.beginPath();
     smallContext.beginPath();
-    // context.fillStyle = '#ffffff';
+    
     var paintSprayer;
     var shift = 0;
     var oldshift = 0;
@@ -339,17 +294,11 @@ $( document ).ready(function() {
     background.src = "http://previews.123rf.com/images/eugenesergeev/eugenesergeev1310/eugenesergeev131000315/23310840-Light-gray-rough-concrete-wall-Seamless-background-photo-texture-Stock-Photo.jpg";
 
     emptyDraft();
-    // var draftBg = new Image();
-    // draftBg.src = "http://color-complect.ru/wp-content/uploads/2012/08/strukturnaia-shtukaturka-53.jpg";
-    
+
     background.onload = function(){
         context.drawImage(background,0,0);   
     }
-
-    // draftBg.onload = function(){
-    //     smallContext.drawImage(draftBg,0,0);   
-    // }
-
+    canvasURL = canvas.toDataURL();
     $('#canvas').mousedown(function(e){
         
         var button = e.which || e.button;

@@ -1,11 +1,12 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <script src="jscolor.js"></script>
 <script src='./drawer.js'>
 </script>
 </head>
-<body  onkeydown='controlWidth(event)' style ="margin:0">
 <style>
  #circle {
       width: 50px;
@@ -44,14 +45,6 @@
   background: #ddd;
   border: 100px solid #ccc;
   margin: 10px;
-/*  > h2 {
-    padding: 1rem;
-    margin: 0 0 0.5rem 0;
-  }
-  > p {
-    padding: 0 1rem;
-  }*/
-  /*animation: widen 10s linear alternate infinite;*/
 }
 
 .stripe-1 {
@@ -66,18 +59,73 @@
   border: 1px solid #ddd;
   border-radius: 2px;
 }
-
+.btn-circle {
+  width: 65px;
+  height: 65px;
+  text-align: center;
+  padding: 0 0 !important;
+  /*font-size: 12px;*/
+  /*line-height: 1.428571429;*/
+  border-radius: 30px;
+  background: none;
+}
 
 </style>
+<body  onkeydown='controlWidth(event)' style ="margin:0">
+
+<div style='top:20px; right:20px; position:fixed; background:#555555;border-radius: 33px; padding-left:5px; padding-top:5px;padding-bottom:5px'>
+<button style=''class="btn btn-circle" >
+    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style = 'font-size:65px; color:#fa5555'></span>
+</button>
+<br>
+<br>
+<button style=''class="btn btn-circle" onclick='toggleShare()'>
+    <i class="fa fa-share-alt" aria-hidden="true" style="font-size:40px;color:white;"></i>
+</button>
+<br>
+
+<div id='shareButtons' style = 'display:none'>
+
+    <!-- <ul class="share-buttons">
+  <li><a href="https://www.facebook.com/sharer/sharer.php?u=&t=" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.URL) + '&t=' + encodeURIComponent(document.URL)); return false;"><img src="images/flat_web_icon_set/color/Facebook.png"></a></li>
+  <li><a href="https://plus.google.com/share?url=" target="_blank" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(document.URL)); return false;"><img src="images/flat_web_icon_set/color/Google+.png"></a></li>
+  <li><a href="http://www.tumblr.com/share?v=3&u=&t=&s=" target="_blank" title="Post to Tumblr" onclick="window.open('http://www.tumblr.com/share?v=3&u=' + encodeURIComponent(document.URL) + '&t=' +  encodeURIComponent(document.title)); return false;"><img src="images/flat_web_icon_set/color/Tumblr.png"></a></li>
+  <li><a href="http://pinterest.com/pin/create/button/?url=&description=" target="_blank" title="Pin it" onclick="window.open('http://pinterest.com/pin/create/button/?url=' + encodeURIComponent(document.URL) + '&description=' +  encodeURIComponent(document.title)); return false;"><img src="images/flat_web_icon_set/color/Pinterest.png"></a></li>
+</ul> -->
+    <!-- <button style=''class="btn btn-circle" >
+        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style = 'font-size:60px; color:#fa5555'></span>
+    </button><br>
+    <button style=''class="btn btn-circle" >
+        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style = 'font-size:60px; color:#fa5555'></span>
+    </button><br>
+    <button style=''class="btn btn-circle" >
+        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style = 'font-size:60px; color:#fa5555'></span>
+    </button>
+    <br> -->
+    <button style=''class="btn btn-circle">
+    <i class="fa fa-question-circle-o" aria-hidden="true" style="font-size:40px;color:white;"></i>
+</button>
+<br><button style=''class="btn btn-circle">
+    <i class="fa fa-question-circle-o" aria-hidden="true" style="font-size:40px;color:white;"></i>
+</button>
+<br>
+    <a id='vkShare'href="http://vkontakte.ru/share.php?url=https://iluhandric.github.io/true-graffity/" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/vk.png" alt="VK" style='size:30px'/>
+    </a><br> 
+</div>
+<meta name="description" content="Article description. This article is very interesting." />  
+
+</div>
 <canvas id="canvasDiv" class = 'canvas'>
     Your browser does not support canvas! Please, install Google Chrome and come back!
 </canvas>
-<button class='btn' style='max-width:100%; width:100%' onclick='showControls(event)'>
+
+<button class='btn' style='max-width:100%; width:100%; border-radius:0 !important;' onclick='showControls(event)'>
     <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     Change can
     <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 </button>
-<div id='controls' style=" bottom:0px; background:rgba(255,255,255,0.7);  display:none; height:60%; width:100%; position:absolute"> 
+<div id='controls' style=" bottom:0px; background:rgba(255,255,255,0.7);  display:none; padding-bottom: 70px; width:100%; position:absolute"> 
 <!--     <div style='width:100%'>
         <button style='float:right; font-size:20px;' onclick='showControls(event)' class="btn glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></button>
     </div>   -->      
@@ -92,7 +140,16 @@
             </button>
             <br>
             <br>
-            <input id='widthRange' type ='range' min='4' value='20' max='50' step='1' onInput="setWidth(this.value)">
+
+            
+
+            <input id='widthRange' type ='range' min='4' value='20' max='50' step='1' onInput="setWidth(this.value);" style ="margin-bottom:5px !important">
+            <!-- <br style = 'line-height: 1px;'> -->
+            <span style='float:left; font-size:14px; color: #999999'>Hold S</span>
+            <span style='float:right; font-size:14px; color: #999999'>Hold W</span>
+            <br>
+            
+
         </div>
         <div  class="panel-body stripe-1">
             <button align = "center" id="circle"  class="btn btn-circle btn-xs jscolor {valueElement:null,value:'000000',onFineChange:'update(this)'} w3-btn-floating w3-teal" 
@@ -126,7 +183,7 @@
             <br>
             <br>
         </div>   
-        <div id="pallete" class="panel-body" style=";color:#555555;padding-button: 300px !important; height: 155px; overflow-y:scroll">No saved cans! Click "Save color"!</div>
+        <div id="pallete" class="panel-body" style=";color:#555555;padding-button: 300px !important; height: 180px; overflow-y:scroll">No saved cans! Click "Save color"!</div>
     </div>
     <button class='btn' style='bottom:0; left:0; position:absolute !important; width:100%' id="hideBtn" onclick='showControls(event)'>
         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
@@ -135,5 +192,7 @@
     </button>
     
 </div>
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57b5b4aa39b75ec6"></script>
 
 </body>
